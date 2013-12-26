@@ -1,0 +1,27 @@
+{
+  "name": "nuts",
+  "version": "0.0.0",
+  "description": "Play with node to do an unpretentious poker game.",
+  "main": ".\\src\\index.js",
+  "scripts": {
+    "test": "grunt simplemocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MiniKeb/nuts.git"
+  },
+  "keywords": [
+    "poker"
+  ],
+  "author": "MiniKeb",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/MiniKeb/nuts/issues"
+  },
+  "homepage": "https://github.com/MiniKeb/nuts",
+  "devDependencies": {
+    "mocha": "~1.15.1",
+    "grunt-mocha-test": "~0.8.1",
+    "grunt": "~0.4.2"
+  }
+}
