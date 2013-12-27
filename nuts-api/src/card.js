@@ -31,8 +31,10 @@ var cardHelpers = {
 	getColor: function(colorTxt){
 		var color = "";
 
-		//Spade, Heart, Diamond, Club
-		// ♠ ♥ ♦ ♣
+		//Spade : ♠
+		//Heart : ♥ 
+		//Diamond : ♦
+		//Club : ♣
 		switch(colorTxt){
 			case "S":
 			case "Spade":
@@ -71,8 +73,6 @@ var cardHelpers = {
 };
 
 var Card = function(value, color){
-	//var values = ["2", "3", "4", "5", "6", "7", "8", "9", "J", "Q", "K", "A"];
-	
 	if (value < 2 || value > 10)
 		throw Error("The numeric card value should be between 2 and 10");
 
