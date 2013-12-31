@@ -19,4 +19,16 @@ describe('Deck', function(){
 		var cardB = deck.peekCard();
 		assert.notDeepEqual(cardA, cardB);
 	});
+
+	it('Doit avoir autant de carte de moins que de cartes distribuées', function(){
+		var deck = new Deck();
+		peekThreeCards(deck);
+		assert.equal(deck.getRemainingCardCount(), 49);
+	})
+
+	function peekThreeCards(deck){
+		deck.peekCard();
+		deck.peekCard();
+		deck.peekCard();
+	}
 });
