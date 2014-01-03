@@ -1,8 +1,8 @@
 function Hand(firstCard, secondCard){
-	// this.firstCard = firstCard;
-	// this.secondCard = secondCard;
-	throw Error("Same cards");
-	
+	if (firstCard.equals(secondCard))
+		throw Error("Same cards");
+	this.firstCard = firstCard;
+	this.secondCard = secondCard;
 }
 
 module.exports = Hand;

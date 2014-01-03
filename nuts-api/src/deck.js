@@ -2,9 +2,9 @@ var Card = require("./card");
 
 var DeckHelpers = {
 	loadAllCards: function(){
-		var colors = ["Spade", "Club", "Diamond", "Heart"];
+		var colors = ["♣", "♦", "♥", "♠"];
 		var values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
-		var cards = new Array();
+		var cards = [];
 
 		for(var c = 0; c < colors.length; c++){
 			for (var v = 0; v < values.length; v++){

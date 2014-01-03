@@ -24,7 +24,7 @@ describe('Deck', function(){
 		var deck = new Deck();
 		peekThreeCards(deck);
 		assert.equal(deck.getRemainingCardCount(), 49);
-	})
+	});
 
 	function peekThreeCards(deck){
 		deck.peekCard();

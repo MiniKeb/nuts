@@ -1,5 +1,9 @@
+var Hand = require("../src/hand");
+var Deck = require("../src/deck");
+
 var Table = function(){
-	this.players = new Array();
+	this.players = [];
+	this.deck = new Deck();
 	this.canStart = false;
 };
 Table.prototype = {
@@ -9,6 +13,17 @@ Table.prototype = {
 			this.canStart = true;
 		}
 	},
-}
+
+	distribute : function(){
+		if(this.canStart){
+			for(var i = 0; i < this.players.length; i++){
+				var first = this.deck.peekCard();
+				var second = this.deck.peekCard();
+				var hand = new Hand(first, second);
+				this.players[i].addHand(hand);
+			}
+		}
+	}
+};
 
 module.exports = Table;

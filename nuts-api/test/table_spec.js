@@ -9,7 +9,7 @@ describe('Table', function(){
 		var addPlayer = function() {
 			var joe = new Player("Joe");
 			table.addPlayer(joe);
-		}
+		};
 		
 		assert.doesNotThrow(addPlayer);
 	});
@@ -26,15 +26,17 @@ describe('Table', function(){
 		assert(table.canStart);
 	});
 
-	it.skip("Doit distribuer 2 cartes à chaque joueur", function(){
+	it("Doit distribuer 2 cartes à chaque joueur", function(){
 		var table = new Table();
-
-		var players = addPlayers(table, ["Alfred", "Benoit", "Christian"]);
 		
-		assert.doesNotThrow(table.distribute);
-		assert.equals(players.Alfred.Hand)
-
-	})
+		var players = addPlayers(table, ["Alfred", "Benoit", "Christian"]);
+		var distribute = function() { table.distribute(); };
+		
+		assert.doesNotThrow(distribute);
+		assert.notDeepEqual(players["Alfred"].hand, players["Benoit"].hand);
+		assert.notDeepEqual(players["Benoit"].hand, players["Christian"].hand);
+		assert.notDeepEqual(players["Christian"].hand, players["Alfred"].hand);
+	});
 
 	function addPlayers(table, names){
 		var players = {};

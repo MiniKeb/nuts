@@ -2,6 +2,7 @@ var assert = require("assert");
 var Player = require("../src/player");
 var Table = require("../src/table");
 var Hand = require("../src/hand");
+var Card = require("../src/card");
 
 describe('Player', function(){
 	var table = new Table();
@@ -24,7 +25,9 @@ describe('Player', function(){
 
 	it("Peut avoir une main avec des cartes", function(){
 		var player = new Player("Bill");
-		var hand = new Hand()
-		player.addHand()
+		var hand = new Hand(new Card(5, "♠"), new Card(8, "♥"));
+		player.addHand(hand);
+
+		assert.deepEqual(player.hand, hand);
 	});
 });

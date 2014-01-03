@@ -4,6 +4,10 @@ var Player = function(name){
 Player.prototype = {
 	seatTo: function(table){
 		table.addPlayer(this);
+	},
+
+	addHand: function(hand){
+		this.hand = hand;
 	}
 };
 
