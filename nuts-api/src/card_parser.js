@@ -1,6 +1,6 @@
 var _ = require("underscore")._;
-var Card = require("../src/card");
-var CardFormaters = require("../src/card_formaters");
+var Card = require("./card");
+var CardFormaters = require("./card_formaters");
 
 var CardParser = function(format){
 	if (CardFormaters[format] === undefined) {

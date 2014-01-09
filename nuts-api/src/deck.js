@@ -1,9 +1,11 @@
 var Card = require("./card");
+var Colors = require("./colors").Colors;
+var Values = require("./values").Values;
 
 var DeckHelpers = {
 	loadAllCards: function(){
-		var colors = ["♣", "♦", "♥", "♠"];
-		var values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
+		var colors = Colors.getAll();
+		var values = Values.getAll();
 		var cards = [];
 
 		for(var c = 0; c < colors.length; c++){

@@ -1,33 +1,32 @@
 var assert = require("assert");
 var CardParser = require("../src/card_parser");
 var Card = require("../src/card");
+var Colors = require("../src/colors").Colors;
+var Values = require("../src/values").Values;
 
 // On utilise v pour la valeur et c pour la couleur de la carte dans les formats.
 describe('CardParser', function(){
-	it('Doit accepter les formats Vcn, Vcs et Value-ColorName', function(){
-		var createParsers = function(){
-			var p1 = new CardParser("Vcn");
-			var p2 = new CardParser("Vcs");
-			var p3 = new CardParser("Value-ColorName");
-		};
-
-		assert.doesNotThrow(createParsers, Error);
+	it('Doit refuser le format Value-ColorSign', function(){
+		var createParser = function(){ new CardParser("Value-ColorSign"); };
+		assert.throws(createParser, Error);
 	});
 
-	it('Doit refuser les autres formats', function(){
-		var createParsers = function(){
-			var p1 = new CardParser("Value-cn");
-			var p2 = new CardParser("V-cs");
-			var p3 = new CardParser("Value-ColorSign");
-		};
-
-		assert.throws(createParsers, Error);
+	it('Doit accepter le format Vcn', function(){
+		var createParser = function(){ new CardParser("Vcn"); };
+		assert.doesNotThrow(createParser, Error);
 	});
 
-	it.skip('Doit parser le format Vc', function(){
-		var parser = new CardParser();
-		var expected = new Card(5, "Spade");
+	it('Doit parser le format Vcn', function(){
+		var parser = new CardParser("Vcn");
+		var expected = new Card(Values[5], Colors.Club);
 
-		assert.deepEqual(parser.parse("5s"), expected);
+		assert.deepEqual(parser.parse("5c"), expected);
+	});
+
+	it('Doit parser le format Vcn avec les valeurs textuelles', function(){
+		var parser = new CardParser("Vcn");
+		var expected = new Card(Values[10], Colors.Club);
+
+		assert.deepEqual(parser.parse("Tc"), expected);
 	});
 });

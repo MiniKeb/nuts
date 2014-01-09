@@ -1,36 +1,31 @@
 var _ = require("underscore")._;
 
-var Club = {
-	sign : '♣',
-	initial : 'c',
-	name : "Club"
-};
-
-var Diamond = {
-	sign : '♦',
-	initial : 'd',
-	name : "Diamond"
-};
-
-var Heart = {
-	sign : '♥',
-	initial : 'h',
-	name : "Heart"
-};
-
-var Spade = {
-	sign : '♠',
-	initial : 's',
-	name : "Spade"
-};
-
-var Colors = function(){
-	this._colors = [Club, Diamond, Heart, Spade];
-};
-Colors.prototype = {
-	_get : function (selector) {
-		return _.find(this._colors, selector);
+var Colors = {
+	Club : {
+		sign : '♣',
+		initial : 'c',
+		name : "Club"
 	},
+
+	Diamond : {
+		sign : '♦',
+		initial : 'd',
+		name : "Diamond"
+	},
+
+	Heart : {
+		sign : '♥',
+		initial : 'h',
+		name : "Heart"
+	},
+
+	Spade : {
+		sign : '♠',
+		initial : 's',
+		name : "Spade"
+	},
+
+	getAll : function() { return [Colors.Club, Colors.Diamond, Colors.Heart, Colors.Spade]; },
 
 	getByName : function (name) {
 		var selector = function(c){ return c.name.toLowerCase() == name.toLowerCase(); };
@@ -45,7 +40,15 @@ Colors.prototype = {
 	getByInitial : function (initial) {
 		var selector = function(c){ return c.initial.toLowerCase() == initial.toLowerCase(); };
 		return this._get(selector);
+	},
+
+	contains : function(color){
+		return _.contains(this.getAll(), color);
+	},
+
+	_get : function (selector) {
+		return _.find(this.getAll(), selector);
 	}
 };
 
-module.exports = Colors;
+exports.Colors = Colors;

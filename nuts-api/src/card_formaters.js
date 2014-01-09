@@ -1,13 +1,19 @@
-var Colors = require("../src/colors");
+var Colors = require("./colors").Colors;
+var Values = require("./values").Values;
+var Card = require("./card");
+
 //"Vcn", "Vcs", "Value-ColorName"
 var CardFormaters = {
 	"Vcn" : {
 		parse : function(cardString){
-			var separationIndex = (cardString.length > 2) ? 2 : 1;
+			if (cardString.length > 2)
+				throw Error("The input string is invalid.");
 			
-			var value = cardString.substring(0, separationIndex);
-			var colorInitial = cardString.substring(separationIndex, 1);
-			var color = new Colors().getByInitial(colorInitial);
+			var valueInitial = cardString.substr(0, 1);
+			var value = Values.getByInitial(valueInitial);
+
+			var colorInitial = cardString.substr(1, 1);
+			var color = Colors.getByInitial(colorInitial);
 
 			return new Card(value, color);
 		},

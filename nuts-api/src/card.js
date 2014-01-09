@@ -1,58 +1,28 @@
 var _ = require("underscore")._;
-
-var cardHelpers = {
-	getRank : function(value){
-		var rank = 0;
-		if (isNaN(value)){
-			switch(value.toUpperCase()){
-				case "J":
-					rank = 11;
-					break;
-
-				case "Q":
-					rank = 12;
-					break;
-				
-				case "K":
-					rank = 13;
-					break;
-				
-				case "A":
-					rank = 14;
-					break;
-				
-				default:
-					throw Error("The value is not valid");
-			}
-		}else{
-			rank = value;
-		}
-		return rank;
-	}
-};
+var Colors = require("./colors").Colors;
+var Values = require("./values").Values;
 
 var Card = function(value, color){
-	if (value < 2 || value > 10)
+	if (!Values.contains(value))
 	{
-		throw Error("The numeric card value should be between 2 and 10.");
+		throw Error("The value "+ value +" is not managed.");
 	}
 
-	if (!_.contains(["♣", "♦", "♥", "♠"], color))
+	if (!Colors.contains(color))
 	{
-		throw Error("The color should be '♣', '♦', '♥' or '♠'.");
+		throw Error("The color should be 'Club : ♣', 'Diamond : ♦', 'Heart : ♥' or 'Spade : ♠'.");
 	}
 
 	this.value = value;
-	this.rank = cardHelpers.getRank(value);
 	this.color = color;
 };
 Card.prototype = {
 	compareTo : function (anotherCard) {
-		return this.rank - anotherCard.rank;
+		return this.value.rank - anotherCard.value.rank;
 	},
 
 	equals : function(anotherCard) {
-		return this.value == anotherCard.value && this.color == anotherCard.color;
+		return this.value === anotherCard.value && this.color === anotherCard.color;
 	}
 };
 

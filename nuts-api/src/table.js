@@ -1,5 +1,5 @@
-var Hand = require("../src/hand");
-var Deck = require("../src/deck");
+var Hand = require("./hand");
+var Deck = require("./deck");
 
 var Table = function(){
 	this.players = [];
