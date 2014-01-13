@@ -15,7 +15,7 @@ describe('Evaluator', function(){
 		assert.throws(createEvaluator, Error);
 	});
 
-	it("Indique si une main est une couleur", function(){
+	it.skip("Indique si une main est une couleur", function(){
 		var trueHand = getCards(["2s", "5h", "Jc", "Ts", "Ks", "5s", "8s"]);
 		var falseHand = getCards(["2s", "5h", "Jc", "Ts", "Ks", "5c", "8s"]);
 		
@@ -25,7 +25,7 @@ describe('Evaluator', function(){
 		assert(!evaluator._hasFlush(falseHand));
 	});
 
-	it("Indique si une main est une suite", function(){
+	it.skip("Indique si une main est une suite", function(){
 		var trueHand = getCards(["9s", "5h", "Jc", "6s", "Ks", "Ts", "Qc"]);
 		var falseHand = getCards(["9s", "5h", "Jc", "6s", "Ks", "7s", "4s"]);
 		
