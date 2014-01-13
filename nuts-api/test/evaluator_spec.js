@@ -15,31 +15,11 @@ describe('Evaluator', function(){
 		assert.throws(createEvaluator, Error);
 	});
 
-	it.skip("Indique si une main est une couleur", function(){
-		var trueHand = getCards(["2s", "5h", "Jc", "Ts", "Ks", "5s", "8s"]);
-		var falseHand = getCards(["2s", "5h", "Jc", "Ts", "Ks", "5c", "8s"]);
-		
-		var evaluator = getEvaluatorForPrivateMethod();
-
-		assert(evaluator._hasFlush(trueHand));
-		assert(!evaluator._hasFlush(falseHand));
-	});
-
-	it.skip("Indique si une main est une suite", function(){
-		var trueHand = getCards(["9s", "5h", "Jc", "6s", "Ks", "Ts", "Qc"]);
-		var falseHand = getCards(["9s", "5h", "Jc", "6s", "Ks", "7s", "4s"]);
-		
-		var evaluator = getEvaluatorForPrivateMethod();
-
-		assert(evaluator._hasQuinte(trueHand));
-		assert(!evaluator._hasQuinte(falseHand));
-	});
-
 	it("Indique que la meilleure combinaison de la main est un carré", function(){
 		var square = getCards(["5h", "5c", "5d", "5s", "2s", "3s", "4s"]);
 		var evaluator = getEvaluatorForPrivateMethod();
 
-		assert.equal(evaluator._getHigherCombination(square).name, "Square");
+		assert.equal(evaluator._getHigherCombination(square).name, "Four of a Kind");
 	});
 
 	it("Indique que la meilleure combinaison de la main est un full", function(){
@@ -53,14 +33,14 @@ describe('Evaluator', function(){
 		var brelan = getCards(["5h", "5c", "5d", "As", "2s", "3s", "4s"]);
 		var evaluator = getEvaluatorForPrivateMethod();
 
-		assert.equal(evaluator._getHigherCombination(brelan).name, "Brelan");
+		assert.equal(evaluator._getHigherCombination(brelan).name, "Three of a Kind");
 	});
 
 	it("Indique que la meilleure combinaison de la main est une double paires", function(){
 		var doublePair = getCards(["5h", "5c", "Ad", "As", "2s", "3s", "4s"]);
 		var evaluator = getEvaluatorForPrivateMethod();
 
-		assert.equal(evaluator._getHigherCombination(doublePair).name, "DoublePair");
+		assert.equal(evaluator._getHigherCombination(doublePair).name, "Two Pairs");
 	});
 
 	it("Indique que la meilleure combinaison de la main est une paire", function(){
@@ -109,7 +89,7 @@ describe('Evaluator', function(){
 		assertWinner(data, { player : "Bill", combination : "Quinte" });
 	});
 
-	it.skip("Peut évaluer les kickers", function() {
+	it("Indique que Bill gagne avec les kickers", function() {
 		var data = {
 			board : ["2s", "5h", "8c", "Td", "Ks"],
 			players : {
@@ -119,34 +99,34 @@ describe('Evaluator', function(){
 			}
 		};
 
-		assertWinner(data, "Bill");
+		assertWinner(data, { player : "Bill", combination : "Kicker" });
 	});
 
-	it.skip("Peut évaluer une quinte flush royale", function(){
+	it("Indique que Chloe gagne avec une quinte flush royale", function(){
 		var data = {
-			board : ["2s", "5h", "Js", "Ts", "Ks"],
+			board : ["7s", "5h", "Js", "Ts", "Ks"],
 			players : {
-				"Alfred" : ["Qh", "4c"],
-				"Bill" : ["Kh", "Ah"],
+				"Alfred" : ["Qh", "4s"],
+				"Bill" : ["8s", "9s"],
 				"Chloe" : ["Qs", "As"]
 			}
 		};
 
-		assertWinner(data, "Chloe");
+		assertWinner(data, { player : "Chloe", combination : "Quinte Flush" });
 	});
 	
 
-	it.skip("Peut évaluer les paires", function(){
-		var board = Helpers.createBoard("2s", "5h", "8c", "Td", "Ks");
-		var players = [
-			Helpers.createPlayer("Alfred", "2h", "4c"),
-			Helpers.createPlayer("Bill", "7h", "Jh"),
-			Helpers.createPlayer("Chloe", "7s", "9d")
-		];
+	it("Indique que Alfred gagne avec une paire", function(){
+		var data = {
+			board : ["2s", "5h", "8c", "Td", "Ks"],
+			players : {
+				"Alfred" : ["2h", "4c"],
+				"Bill" : ["7h", "Jh"],
+				"Chloe" : ["7s", "9d"]
+			}
+		};
 
-		var evaluator = new Evaluator(board, players);
-
-		assert.equal(evaluator.getWinner().name, "Alfred");
+		assertWinner(data, { player : "Alfred", combination : "Pair" });
 	});
 
 	function getCards(cards){
@@ -173,10 +153,10 @@ describe('Evaluator', function(){
 			players.push(player);
 		}
 
-		var evaluator = new Evaluator(board, players);
+		var evaluated = new Evaluator(board, players).getWinner();
 
-		assert.equal(evaluator.getWinner().player.name, winner.player);
-		assert.equal(evaluator.getWinner().combination.name, winner.combination);
+		assert.equal(evaluated.player.name, winner.player);
+		assert.equal(evaluated.combination.name, winner.combination);
 	}
 
 });

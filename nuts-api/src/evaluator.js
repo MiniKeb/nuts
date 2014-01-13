@@ -1,12 +1,25 @@
 var _ = require("underscore")._;
 
-var Higher = function(name, rank, combination, kickers){
+var Higher = function(name, rank, combination, allCards){
 	this.name = name;
 	this.rank = rank;
 	this.combination = combination;
-	this.kickers = kickers;
-	this.all = _.union(this.combination, this.kickers);
-	this.score = (this.rank * 1000000) + (all[0].value.rank * 10000) + (all[1].value.rank * 100) + _.sum(_.last(all, 3), getRank);
+	this.allCards = allCards;
+	this.kickers = this._getKickers(allCards, combination);
+	this.score = this._getScore(this.allCards, this.rank);
+};
+Higher.prototype = {
+	_getScore : function(all, rank){
+		return (rank * 1000000)
+			+ (all[0].value.rank * 10000)
+			+ (all[1].value.rank * 100)
+			+ _.reduce(_.last(all, 3), function(memo, card){ return memo + card.value.rank; }, 0);
+	},
+	_getKickers : function(cards, combination) {
+		var remain = _.sortBy(_.difference(cards, combination), function(card){ return card.value.rank; }).reverse();
+		var kickerCount = 5 - combination.length;
+		return _.first(remain, kickerCount);
+	}
 };
 
 var Evaluator = function(board, players){
@@ -32,7 +45,7 @@ Evaluator.prototype = {
 		for (var i = 0; i < this.players.length; i++){
 			var currentPlayer = this.players[i];
 			var combination = this._getBestCombination(currentPlayer);
-
+			
 			if (best.player === null || best.combination.score < combination.score)
 			{
 				best = { player : currentPlayer, combination : combination };
@@ -48,89 +61,34 @@ Evaluator.prototype = {
 	},
 
 	_getHigherCombination: function(cards){
-		var getRank = function(card){ return card.value.rank; };
-
-		var higher = {
-			name : "",
-			rank : 0,
-			combination : [],
-			kickers : [],
-			getScore : function(){
-				var all = _.union(this.combination, this.kickers);
-				return (this.rank * 1000000) + (all[0].value.rank * 10000) + (all[1].value.rank * 100) + _.sum(_.last(all, 3), getRank);
-			}
-		};
-
-		var getKickers = function(combi) {
-			var remain = _.sortBy(_.difference(cards, combi), getRank).reverse();
-			var kickerCount = 5 - combi.length;
-			return _.first(remain, kickerCount);
-		};
+		var higher = null;
 
 		var combinations = this._getCombinations(cards);
 
-		if (!_.isEmpty(combinations.quinteFlush))
-		{
-			higher = {
-				name : "Quinte Flush",
-				rank : 9,
-				combination : combinations.quinteFlush,
-				kickers : getKickers(combinations.quinteFlush)
-			};
+		if (!_.isEmpty(combinations.quinteFlush)) {
+			higher = new Higher("Quinte Flush", 9, combinations.quinteFlush, cards);
 		} else if (!_.isEmpty(combinations.square)) {
-			higher = {
-				name : "Four of a Kind",
-				rank : 8,
-				combination : combinations.square,
-				kickers : getKickers(combinations.square)
-			};
+			higher = new Higher("Four of a Kind", 8, combinations.square, cards);
 		} else if (!_.isEmpty(combinations.brelan) && !_.isEmpty(combinations.pairs)) {
 			var highPair = _.max(combinations.pairs, function (pair) { return pair[0].value.rank; });
 			var combi = _.union(combinations.brelan, highPair);
-			higher = {
-				name : "Full",
-				rank : 7,
-				combination : combi,
-				kickers : getKickers(combi)
-			};
+			higher = new Higher("Full", 7, combi, cards);
 		} else if (!_.isEmpty(combinations.flush)) {
-			higher = {
-				name : "Flush",
-				rank : 6,
-				combination : combinations.flush,
-				kickers : getKickers(combinations.flush)
-			};
+			higher = new Higher("Flush", 6, combinations.flush, cards);
 		} else if (!_.isEmpty(combinations.quinte)) {
-			higher = {
-				name : "Quinte",
-				rank : 5,
-				combination : combinations.quinte,
-				kickers : getKickers(combinations.quinte)
-			};
+			higher = new Higher("Quinte", 5, combinations.quinte, cards);
 		} else if (!_.isEmpty(combinations.brelan)) {
-			higher = {
-				name : "Three of a Kind",
-				rank : 4,
-				combination : combinations.brelan,
-				kickers : getKickers(combinations.brelan)
-			};
+			higher = new Higher("Three of a Kind", 4, combinations.brelan, cards);
 		} else if (!_.isEmpty(combinations.pairs)) {
 			var highPairs = _.first(_.sortBy(combinations.pairs, function (pair) { return pair[0].value.rank; }).reverse(), 2);
 			var combina = _.flatten(highPairs);
-			higher = {
-				name : combinations.pairs.length > 1 ? "Two Pairs" : "Pair",
-				rank : combinations.pairs.length > 1 ? 3 : 2,
-				combination : combina,
-				kickers : getKickers(combina)
-			};
+			higher = new Higher(combinations.pairs.length > 1 ? "Two Pairs" : "Pair",
+				combinations.pairs.length > 1 ? 3 : 2,
+				combina,
+				cards);
 		} else {
-			var kickers = _.first(_.sortBy(cards, getRank).reverse(), 5);
-			higher = {
-				name : "Kicker",
-				rank : 1,
-				combination : kickers,
-				kickers : []
-			};
+			var kickers = _.first(_.sortBy(cards, function(card){ return card.value.rank; }).reverse(), 5);
+			higher = new Higher("Kicker", 1, kickers, cards);
 		}
 
 		return higher;
@@ -138,7 +96,7 @@ Evaluator.prototype = {
 
 	_getCombinations : function(cards){
 		var combinations = {
-			quintFlush : [],
+			quinteFlush : [],
 			flush : [],
 			quinte : [],
 			square : [],
@@ -149,9 +107,10 @@ Evaluator.prototype = {
 		var cardByColor = _.groupBy(cards, function(card){ return card.color.name; });
 		
 		for(var color in cardByColor){
-			if (cardByColor[color] > 4)
+			if (cardByColor[color].length > 4)
 			{
-				if (_isQuinte(cardByColor[color])){
+				var quinteFlush = this._getQuinte(cardByColor[color]);
+				if (!_.isEmpty(quinteFlush)){
 					combinations.quinteFlush = cardByColor[color];
 				}else{
 					combinations.flush = cardByColor[color];
@@ -159,9 +118,9 @@ Evaluator.prototype = {
 			}
 		}
 
-		var distinctCards = _.uniq(cards, false, getRank);
-		if (_isQuinte(distinctCards)){
-			combinations.quinte = distinctCards;
+		var quinte = this._getQuinte(cards);
+		if (!_.isEmpty(quinte)){
+			combinations.quinte = quinte;
 		}
 
 		var cardByValue = _.groupBy(cards, function(card){ return card.value.name; });
@@ -189,32 +148,26 @@ Evaluator.prototype = {
 		return combinations;
 	},
 
-	_isQuinte : function(cards){
-		var sortedCards = _.sortBy(cards, function(card){ return card.value.rank; });
+	_getQuinte : function(cards){
+		var sortedCards = _.sortBy(cards, function(card){ return card.value.rank; }).reverse();
 
-		var isQuinte = cards.length == 5;
-		for(var i = 1; i < sortedCards.length; i++){
-			var firstRank = sortedCards[0].value.rank;
+		var quinte = [];
+		var prevRank = 0;
+		for (var i = 0; i < sortedCards.length; i++){
 			var currentRank = sortedCards[i].value.rank;
-			isQuinte &= currentRank - firstRank == i;
+			if (quinte.length < 5){
+				if (prevRank === 0 || prevRank == currentRank + 1){
+					prevRank = currentRank;
+					quinte.push(currentRank);
+				} else if (prevRank != currentRank) {
+					prevRank = currentRank;
+					quinte = [currentRank];
+				}
+			}
 		}
 
-		return isQuinte;
+		return quinte.length == 5 ? quinte : null;
 	}
-
-/*	
-	_hasFlush : function(cards){
-		var colorCount = _.countBy(cards, function(card){ return card.color.name; });
-		var hasFlush = false;
-
-		for(var color in colorCount){
-			if (colorCount[color] > 4)
-				hasFlush = true;
-		}
-
-		return hasFlush;
-	}
-*/
 };
 
 module.exports = Evaluator;
