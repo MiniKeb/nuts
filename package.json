@@ -11,7 +11,10 @@
     "url": "https://github.com/MiniKeb/nuts.git"
   },
   "keywords": [
-    "poker", "node", "javascript", "js"
+    "poker",
+    "node",
+    "javascript",
+    "js"
   ],
   "author": "MiniKeb",
   "license": "BSD-2-Clause",
@@ -24,5 +27,9 @@
     "grunt-mocha-test": "~0.8.1",
     "grunt": "~0.4.2",
     "underscore": "~1.5.2"
+  },
+  "dependencies": {
+    "json-socket": "~0.1.2",
+    "readline": "0.0.3"
   }
 }

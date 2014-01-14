@@ -14,19 +14,29 @@ describe('Table', function(){
 		assert.doesNotThrow(addPlayer);
 	});
 
+	it("Peut supprimer un joueur", function(){
+		var table = new Table();
+
+		var joe = new Player("Joe");
+		var bill = new Player("Bill");
+	
+		table.addPlayer(joe);
+		table.addPlayer(bill);
+	});
+
 	it("Ne peut pas commencer avec moins de 2 joueurs", function(){
 		var table = new Table();
 		addPlayers(table, ["Alfred"]);
-		assert(!table.canStart);
+		assert(!table._canPlay());
 	});
 
 	it("Peut commencer avec 2 joueurs au moins", function(){
 		var table = new Table();
 		addPlayers(table, ["Alfred", "Benoit", "Christian"]);
-		assert(table.canStart);
+		assert(table._canPlay());
 	});
 
-	it("Doit distribuer 2 cartes à chaque joueur", function(){
+	it("Doit distribuer 2 cartes différentes à chaque joueur", function(){
 		var table = new Table();
 		
 		var players = addPlayers(table, ["Alfred", "Benoit", "Christian"]);
