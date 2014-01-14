@@ -48,6 +48,18 @@ describe('Table', function(){
 		assert.notDeepEqual(players["Christian"].hand, players["Alfred"].hand);
 	});
 
+	it("Doit emettre un evenement à l'ajout d'un joueur", function(){
+		var table = new Table();
+		var isAdded = false;
+		table.on("PlayerAdded", function(){
+			isAdded = true;
+		});
+
+		assert(!isAdded);
+		table.addPlayer(new Player("Jill"));
+		assert(isAdded);
+	});
+
 	function addPlayers(table, names){
 		var players = {};
 		for(var i = 0; i < names.length; i++){

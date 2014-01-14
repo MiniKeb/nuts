@@ -1,3 +1,5 @@
+var extend = require("node.extend");
+var EventEmitter = require("events").EventEmitter;
 var Hand = require("./hand");
 var Deck = require("./deck");
 
@@ -5,9 +7,10 @@ var Table = function(){
 	this.players = [];
 	this.deck = new Deck();
 };
-Table.prototype = {
+Table.prototype = extend({}, new EventEmitter, {
 	addPlayer : function (player){
 		this.players.push(player);
+		this.emit("PlayerAdded", player);
 	},
 
 	removePlayer : function(player){
@@ -32,6 +35,6 @@ Table.prototype = {
 	},
 
 	_canPlay : function() { return this.players.length > 1;	}
-};
+});
 
 module.exports = Table;
