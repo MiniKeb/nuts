@@ -7,7 +7,7 @@ var Table = function(){
 	this.players = [];
 	this.deck = new Deck();
 };
-Table.prototype = extend({}, new EventEmitter, {
+Table.prototype = extend({}, EventEmitter.prototype, {
 	addPlayer : function (player){
 		this.players.push(player);
 		this.emit("PlayerAdded", player);
@@ -32,6 +32,7 @@ Table.prototype = extend({}, new EventEmitter, {
 	},
 
 	wait : function(){
+		
 	},
 
 	_canPlay : function() { return this.players.length > 1;	}
