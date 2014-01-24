@@ -32,4 +32,35 @@ describe('Player', function(){
 
 		assert.deepEqual(player.hand, hand);
 	});
+
+	it("Doit avoir des jetons", function(){
+		var player = new Player("Bill", 500);
+
+		assert.equal(player.stackAmount, 500);
+	});
+
+	it("Peut miser un montant", function(){
+		var player = new Player("Bill", 500);
+		player.bet(100);
+		assert.equal(player.stackAmount, 400);
+	});
+
+	it("Doit emettre un événement lorsqu'il a misé", function(){
+		var player = new Player("Bill", 500);
+
+		var hasPlayed = false;
+		player.on("Bet", function(){
+			hasPlayed = true;
+		});
+
+		assert(!hasPlayed);
+		player.bet(100);
+		assert(hasPlayed);
+	});
+
+	it("Ne doit pas pouvoir miser plus que ce qu'il a", function(){
+		var player = new Player("Bill", 500);
+		player.bet(600);
+		assert.equal(player.stackAmount, 0);
+	});
 });

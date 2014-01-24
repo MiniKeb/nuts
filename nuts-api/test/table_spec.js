@@ -60,6 +60,46 @@ describe('Table', function(){
 		assert(isAdded);
 	});
 
+	it("Doit prendre les blinds au début du tour", function(){
+		var table = new Table(1);
+		
+		var alphonse = new Player("Alphonse", 1000);
+		table.addPlayer(alphonse);
+		
+		var bernard = new Player("Bernard", 500);
+		table.addPlayer(bernard);
+
+		var christophe = new Player("Christophe", 250);
+		table.addPlayer(christophe);
+
+		table.preflop();
+
+		assert.equal(alphonse.stackAmount, 999);
+		assert.equal(bernard.stackAmount, 498);
+		assert.equal(christophe.stackAmount, 250);
+	});
+
+	it("Doit prendre les blinds en décalant au début de chaque tour", function(){
+		var table = new Table(1);
+		
+		var alphonse = new Player("Alphonse", 1000);
+		table.addPlayer(alphonse);
+		
+		var bernard = new Player("Bernard", 500);
+		table.addPlayer(bernard);
+
+		var christophe = new Player("Christophe", 250);
+		table.addPlayer(christophe);
+
+		table.preflop();
+
+		table.preflop();
+
+		assert.equal(alphonse.stackAmount, 999);
+		assert.equal(bernard.stackAmount, 497);
+		assert.equal(christophe.stackAmount, 248);
+	});
+
 	function addPlayers(table, names){
 		var players = {};
 		for(var i = 0; i < names.length; i++){

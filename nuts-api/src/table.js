@@ -3,9 +3,11 @@ var EventEmitter = require("events").EventEmitter;
 var Hand = require("./hand");
 var Deck = require("./deck");
 
-var Table = function(){
+var Table = function(smallBlind){
 	this.players = [];
 	this.deck = new Deck();
+	this.currentBlindIndex = 0;
+	this.currentSmallBlind = smallBlind;
 };
 Table.prototype = extend({}, EventEmitter.prototype, {
 	addPlayer : function (player){
@@ -29,6 +31,11 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 				this.players[i].addHand(hand);
 			}
 		}
+	},
+
+	preflop: function(){
+		this.players[this.currentBlindIndex].bet(this.currentSmallBlind);
+		this.players[this.currentBlindIndex + 1].bet(this.currentSmallBlind * 2);
 	},
 
 	wait : function(){
