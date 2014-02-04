@@ -29,4 +29,11 @@ describe('CardParser', function(){
 
 		assert.deepEqual(parser.parse("Tc"), expected);
 	});
+
+	it("Doit formater au format Vcn", function(){
+		var parser = new CardParser("Vcn");
+		var card = new Card(Values[10], Colors.Club);
+
+		assert.equal(parser.format(card), "Tc");
+	});
 });

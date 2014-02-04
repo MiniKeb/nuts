@@ -28,7 +28,26 @@ rl.question("Server IP : ", function(ipAddress){
 			socket.sendMessage({command : "NewPlayer", name : player});
 		});
 		socket.on("message", function(message){
-			console.log(message);
+			switch(message.action){
+				case "Display":
+					console.log(message.content);
+					break;
+				case "Ask":
+					rl.question(message.content, function(action){
+						switch(action){
+							case "Fold":
+								socket.sendMessage({command: "Fold"});
+								break;
+							case "Raise":
+							case "Bet":
+								socket.sendMessage({command: "Bet", amount: 2});
+								break;
+							case "Check":
+								socket.sendMessage({command: "Check"});
+								break;
+						}
+					});
+			}
 		});
 	});
 });
@@ -49,10 +68,6 @@ messages = [
 	},
 
 	{
-		command : "Check"
-	},
-
-	{
-		command : "Check"
+		command : "Fold"
 	}
 ];

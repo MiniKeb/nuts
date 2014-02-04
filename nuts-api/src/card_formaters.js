@@ -18,7 +18,7 @@ var CardFormaters = {
 			return new Card(value, color);
 		},
 		format : function(card){
-			var value = card.value.toString().toUpperCase();
+			var value = card.value.initial.toUpperCase();
 			var colorInitial = card.color.initial.toLowerCase();
 			return value + colorInitial;
 		}

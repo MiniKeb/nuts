@@ -158,6 +158,52 @@ describe('Table', function(){
 		table.waitCurrentPlayer();
 	});
 
+	it("Doit emettre un événement lorsque le nombre minimum de joueur est atteint", function(){
+		var table = new Table(1);
+
+		var isReached = false;
+		table.on("minPlayerCountReached", function(){
+			isReached = true;
+		});
+
+		assert(!isReached);
+		var alphonse = new Player("Alphonse", 10);
+		alphonse.seatTo(table);
+		
+		assert(!isReached);
+		var bernard = new Player("Bernard", 10);
+		bernard.seatTo(table);
+
+		assert(isReached);
+		var christophe = new Player("Christophe", 10);
+		christophe.seatTo(table);
+
+		assert(isReached);
+	});
+
+	it.skip("Doit pouvoir jouer une partie", function(){
+		var table = new Table(1);
+
+		var alphonse = new Player("Alphonse", 10);
+		alphonse.seatTo(table);
+		
+		var bernard = new Player("Bernard", 10);
+		bernard.seatTo(table);
+
+		var christophe = new Player("Christophe", 10);
+		christophe.seatTo(table);
+
+		table.distribute();
+		table.preflop();
+
+		table.waitCurrentPlayer();
+		table.on("PlayerWaited", function(player){
+			console.log(player.name + "is waited");
+		});
+
+
+	});
+
 	function addPlayers(table, names){
 		var players = {};
 		for(var i = 0; i < names.length; i++){

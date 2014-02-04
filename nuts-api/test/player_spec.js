@@ -60,6 +60,11 @@ describe('Player', function(){
 
 	it("Ne doit pas pouvoir miser plus que ce qu'il a", function(){
 		var player = new Player("Bill", 500);
+		
+		player.on("Bet", function(amount){
+			assert.equal(500, amount);
+		});
+
 		player.bet(600);
 		assert.equal(player.stackAmount, 0);
 	});

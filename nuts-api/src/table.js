@@ -4,7 +4,8 @@ var Hand = require("./hand");
 var Deck = require("./deck");
 
 var Table = function(smallBlind){
-	this.tablePlayers = [];
+	this.minPlayerCount = 2;
+
 	this.players = [];
 	this.deck = new Deck();
 	this.currentBlindIndex = 0;
@@ -13,18 +14,21 @@ var Table = function(smallBlind){
 };
 Table.prototype = extend({}, EventEmitter.prototype, {
 	addPlayer : function (player){
-		this.tablePlayers.push(player);
 		this.players.push(player);
-		var self = this;
+
+		this.emit("PlayerAdded", player);
+
+		if(this.players.length == this.minPlayerCount){
+			this.emit("minPlayerCountReached");
+		}
 		
+		var self = this;
 		player.on("Bet", function(amount){
 			self.emit("PlayerBet", { player : this, amount : amount });
 		});
 		player.on("Folded", function(player){
 			self.emit("PlayerFolded", this);
 		});
-		
-		this.emit("PlayerAdded", player);
 	},
 
 	removePlayer : function(player){
