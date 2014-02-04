@@ -19,7 +19,15 @@ Player.prototype = extend({}, EventEmitter.prototype, {
 			amount = this.stackAmount;
 		}
 		this.stackAmount = this.stackAmount - amount;
-		this.emit("Bet", { player : this, amount : amount });
+		this.emit("Bet", amount);
+	},
+
+	fold: function(){
+		this.emit("Folded");
+	},
+
+	check: function(){
+		this.emit("Checked");
 	}
 });
 

@@ -4,14 +4,26 @@ var Hand = require("./hand");
 var Deck = require("./deck");
 
 var Table = function(smallBlind){
+	this.tablePlayers = [];
 	this.players = [];
 	this.deck = new Deck();
 	this.currentBlindIndex = 0;
 	this.currentSmallBlind = smallBlind;
+	this.currentPlayerIndex = 0;
 };
 Table.prototype = extend({}, EventEmitter.prototype, {
 	addPlayer : function (player){
+		this.tablePlayers.push(player);
 		this.players.push(player);
+		var self = this;
+		
+		player.on("Bet", function(amount){
+			self.emit("PlayerBet", { player : this, amount : amount });
+		});
+		player.on("Folded", function(player){
+			self.emit("PlayerFolded", this);
+		});
+		
 		this.emit("PlayerAdded", player);
 	},
 
@@ -20,6 +32,7 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 		if (playerIndex > -1){
 			this.players.splice(playerIndex, 1);
 		}
+		this.emit("PlayerRemoved", player);
 	},
 
 	distribute : function(){
@@ -35,19 +48,24 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 
 	preflop: function(){
 		var currentIndex = this.currentBlindIndex;
-		var nextIndex = this.currentBlindIndex + 1;
-		nextIndex = nextIndex >= this.players.length ? 0 : nextIndex;
+		var nextIndex = this._getNextIndex(this.currentBlindIndex);
 		
 		this.players[currentIndex].bet(this.currentSmallBlind);
 		this.players[nextIndex].bet(this.currentSmallBlind * 2);
 
-		this.currentBlindIndex++;
-		if(this.currentBlindIndex >= this.players.length)
-			this.currentBlindIndex = 0;
+		this.currentBlindIndex = this._getNextIndex(this.currentBlindIndex);
+		this.currentPlayerIndex = this._getNextIndex(this.currentBlindIndex);
 	},
 
-	wait : function(){
-		
+	waitCurrentPlayer: function(){
+		var waitedPlayer = this.players[this.currentPlayerIndex];
+		this.emit("PlayerWaited", waitedPlayer);
+
+		this.currentPlayerIndex = this._getNextIndex(this.currentPlayerIndex);
+	},
+
+	_getNextIndex: function(index){
+		return (index + 1 >= this.players.length) ? 0 : index + 1;
 	},
 
 	_canPlay : function() { return this.players.length > 1;	}

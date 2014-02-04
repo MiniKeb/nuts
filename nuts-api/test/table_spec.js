@@ -106,6 +106,58 @@ describe('Table', function(){
 		assert.equal(christophe.stackAmount, 247);
 	});
 
+	it("Doit emettre un événement lorsqu'un joueur se couche", function(){
+		var table = new Table(1);
+
+		var alphonse = new Player("Alphonse", 1000);
+		table.addPlayer(alphonse);
+		
+		var bernard = new Player("Bernard", 500);
+		table.addPlayer(bernard);
+
+		var christophe = new Player("Christophe", 250);
+		table.addPlayer(christophe);
+
+		table.preflop();
+
+		var isFolded = false;
+		table.on("PlayerFolded", function(player){
+			isFolded = true;
+			assert.deepEqual(christophe, player);
+		});
+
+		assert(!isFolded);
+		christophe.fold();
+		assert(isFolded);
+	});
+
+	it("Doit émettre un événement lorsqu'un joueur pari", function(){
+		var table = new Table(1);
+
+		var alphonse = new Player("Alphonse", 1000);
+		table.addPlayer(alphonse);
+		
+		var bernard = new Player("Bernard", 500);
+		table.addPlayer(bernard);
+
+		var christophe = new Player("Christophe", 250);
+		table.addPlayer(christophe);
+
+		table.preflop();
+
+		table.on("PlayerWaited", function(player){
+			player.bet(20);
+		});
+
+		table.on("PlayerBet", function(e){
+			assert.deepEqual(christophe, e.player);
+			assert.equal(christophe.name, e.player.name);
+			assert.equal(christophe.stackAmount, 230);
+		});
+
+		table.waitCurrentPlayer();
+	});
+
 	function addPlayers(table, names){
 		var players = {};
 		for(var i = 0; i < names.length; i++){

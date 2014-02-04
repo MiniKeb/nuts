@@ -63,4 +63,30 @@ describe('Player', function(){
 		player.bet(600);
 		assert.equal(player.stackAmount, 0);
 	});
+
+	it("Doit emettre un événement lorsqu'il se couche", function(){
+		var player = new Player("Bill", 500);
+
+		var isFolded = false;
+		player.on("Folded", function(){
+			isFolded  = true;
+		});
+
+		assert(!isFolded);
+		player.fold();
+		assert(isFolded );
+	});
+
+	it("Doit emettre un événement lorsqu'il check", function(){
+		var player = new Player("Bill", 500);
+
+		var hasChecked = false;
+		player.on("Checked", function(){
+			hasChecked  = true;
+		});
+
+		assert(!hasChecked);
+		player.check();
+		assert(hasChecked );
+	});
 });
