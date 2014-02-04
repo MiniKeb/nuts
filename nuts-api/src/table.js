@@ -34,8 +34,16 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 	},
 
 	preflop: function(){
-		this.players[this.currentBlindIndex].bet(this.currentSmallBlind);
-		this.players[this.currentBlindIndex + 1].bet(this.currentSmallBlind * 2);
+		var currentIndex = this.currentBlindIndex;
+		var nextIndex = this.currentBlindIndex + 1;
+		nextIndex = nextIndex >= this.players.length ? 0 : nextIndex;
+		
+		this.players[currentIndex].bet(this.currentSmallBlind);
+		this.players[nextIndex].bet(this.currentSmallBlind * 2);
+
+		this.currentBlindIndex++;
+		if(this.currentBlindIndex >= this.players.length)
+			this.currentBlindIndex = 0;
 	},
 
 	wait : function(){

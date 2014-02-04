@@ -98,6 +98,12 @@ describe('Table', function(){
 		assert.equal(alphonse.stackAmount, 999);
 		assert.equal(bernard.stackAmount, 497);
 		assert.equal(christophe.stackAmount, 248);
+
+		table.preflop();
+
+		assert.equal(alphonse.stackAmount, 997);
+		assert.equal(bernard.stackAmount, 497);
+		assert.equal(christophe.stackAmount, 247);
 	});
 
 	function addPlayers(table, names){
