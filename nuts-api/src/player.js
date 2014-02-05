@@ -4,6 +4,8 @@ var EventEmitter = require("events").EventEmitter;
 var Player = function(name, stackAmount){
 	this.name = name;
 	this.stackAmount = stackAmount;
+	this.betAmount = 0;
+	this.talk = false;
 };
 Player.prototype = extend({}, EventEmitter.prototype, {
 	seatTo: function(table){

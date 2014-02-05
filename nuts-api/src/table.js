@@ -2,12 +2,17 @@ var extend = require("node.extend");
 var EventEmitter = require("events").EventEmitter;
 var Hand = require("./hand");
 var Deck = require("./deck");
+var Game = require("./game");
 
 var Table = function(smallBlind){
 	this.minPlayerCount = 2;
 
 	this.players = [];
 	this.deck = new Deck();
+
+	this.game = null;
+
+
 	this.currentBlindIndex = 0;
 	this.currentSmallBlind = smallBlind;
 	this.currentPlayerIndex = 0;
