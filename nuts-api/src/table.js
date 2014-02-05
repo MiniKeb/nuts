@@ -10,8 +10,6 @@ var Table = function(smallBlind){
 	this.players = [];
 	this.deck = new Deck();
 
-	this.game = null;
-
 
 	this.currentBlindIndex = 0;
 	this.currentSmallBlind = smallBlind;
@@ -20,20 +18,9 @@ var Table = function(smallBlind){
 Table.prototype = extend({}, EventEmitter.prototype, {
 	addPlayer : function (player){
 		this.players.push(player);
-
-		this.emit("PlayerAdded", player);
-
 		if(this.players.length == this.minPlayerCount){
-			this.emit("minPlayerCountReached");
+			this._startGame();
 		}
-		
-		var self = this;
-		player.on("Bet", function(amount){
-			self.emit("PlayerBet", { player : this, amount : amount });
-		});
-		player.on("Folded", function(player){
-			self.emit("PlayerFolded", this);
-		});
 	},
 
 	removePlayer : function(player){
@@ -41,43 +28,13 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 		if (playerIndex > -1){
 			this.players.splice(playerIndex, 1);
 		}
-		this.emit("PlayerRemoved", player);
 	},
 
-	distribute : function(){
-		if(this._canPlay()){
-			for(var i = 0; i < this.players.length; i++){
-				var first = this.deck.peekCard();
-				var second = this.deck.peekCard();
-				var hand = new Hand(first, second);
-				this.players[i].addHand(hand);
-			}
-		}
-	},
-
-	preflop: function(){
-		var currentIndex = this.currentBlindIndex;
-		var nextIndex = this._getNextIndex(this.currentBlindIndex);
-		
-		this.players[currentIndex].bet(this.currentSmallBlind);
-		this.players[nextIndex].bet(this.currentSmallBlind * 2);
-
-		this.currentBlindIndex = this._getNextIndex(this.currentBlindIndex);
-		this.currentPlayerIndex = this._getNextIndex(this.currentBlindIndex);
-	},
-
-	waitCurrentPlayer: function(){
-		var waitedPlayer = this.players[this.currentPlayerIndex];
-		this.emit("PlayerWaited", waitedPlayer);
-
-		this.currentPlayerIndex = this._getNextIndex(this.currentPlayerIndex);
-	},
-
-	_getNextIndex: function(index){
-		return (index + 1 >= this.players.length) ? 0 : index + 1;
-	},
-
-	_canPlay : function() { return this.players.length > 1;	}
+	_startGame: function(){
+		this.emit("Started");
+		this.game = new Game(this.players);
+		this.game.on("Finished", this._startGame);
+	}
 });
 
 module.exports = Table;
