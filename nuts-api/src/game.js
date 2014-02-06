@@ -130,9 +130,7 @@ Game.prototype = extend({}, EventEmitter.prototype, {
 		};
 
 		var call = function(){
-			var amount = previousPlayer.betAmount - self.currentPlayer.betAmount;
-
-			self._betAmount(self.currentPlayer, amount);
+			self._betAmount(self.currentPlayer, previousPlayer.betAmount);
 
 			self.currentPlayer.emit("Called");
 			
@@ -168,6 +166,7 @@ Game.prototype = extend({}, EventEmitter.prototype, {
 	},
 
 	_betAmount: function(player, amount){
+		amount = amount - player.betAmount;
 		if (player.stackAmount < amount){
 			amount = player.stackAmount;
 			player.emit("AllIn");
