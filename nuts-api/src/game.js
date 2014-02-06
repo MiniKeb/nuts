@@ -28,7 +28,9 @@ var Game = function(players){
 Game.prototype = extend({}, EventEmitter.prototype, {
 	start : function(){
 		this._betAmount(this.smallBlindPlayer, this.smallBlindAmount);
+		this.smallBlindPlayer.emit("SmallBlind", this.smallBlindAmount);
 		this._betAmount(this.bigBlindPlayer, this.bigBlindAmount);
+		this.bigBlindPlayer.emit("BigBlind", this.bigBlindAmount);
 		this._distribute();
 
 		this.currentPlayer.actions = this._getAvailableActions();
@@ -159,6 +161,7 @@ Game.prototype = extend({}, EventEmitter.prototype, {
 			actions["check"] = check;
 		}
 
+		self.currentPlayer.emit("TokenObtained", { actions : actions, board : this.cards});
 		return actions;
 	},
 

@@ -35,15 +35,15 @@ rl.question("Server IP : ", function(ipAddress){
 				case "Ask":
 					rl.question(message.content, function(action){
 						switch(action){
-							case "Fold":
-								socket.sendMessage({command: "Fold"});
+							case "bet":
+								rl.question("How much?", function(amount){
+									socket.sendMessage({command: "bet", amount: amount, name : player});
+								});
 								break;
-							case "Raise":
-							case "Bet":
-								socket.sendMessage({command: "Bet", amount: 2});
-								break;
-							case "Check":
-								socket.sendMessage({command: "Check"});
+							case "fold":
+							case "check":
+							case "call":
+								socket.sendMessage({command: action, name : player});
 								break;
 						}
 					});
@@ -51,23 +51,3 @@ rl.question("Server IP : ", function(ipAddress){
 		});
 	});
 });
-
-
-messages = [
-	{
-		command : "NewPlayer",
-		name : "Bill"
-	},
-
-	{
-		command : "Check"
-	},
-
-	{
-		command : "Bet"
-	},
-
-	{
-		command : "Fold"
-	}
-];
