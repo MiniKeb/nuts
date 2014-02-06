@@ -19,9 +19,10 @@ var Game = function(players, gameCount){
 	this.bigBlindAmount = 2;
 
 	var index = gameCount < this.players.length ? gameCount : gameCount % this.players.length;
-
+	var next = index + 1 < this.players.length ? index + 1 : this.players.length - 1;
+	
 	this.smallBlindPlayer = this.players[index];
-	this.bigBlindPlayer = this.players[index + 1];
+	this.bigBlindPlayer = this.players[next];
 	
 	this.currentPlayer = this.players.length > 2 ? this.players[2] : this.players[0];
 
@@ -31,8 +32,10 @@ Game.prototype = extend({}, EventEmitter.prototype, {
 	start : function(){
 		this._betAmount(this.smallBlindPlayer, this.smallBlindAmount);
 		this.smallBlindPlayer.emit("SmallBlind", this.smallBlindAmount);
+		
 		this._betAmount(this.bigBlindPlayer, this.bigBlindAmount);
 		this.bigBlindPlayer.emit("BigBlind", this.bigBlindAmount);
+		
 		this._distribute();
 
 		this.currentPlayer.actions = this._getAvailableActions();

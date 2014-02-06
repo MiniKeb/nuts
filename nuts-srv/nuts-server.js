@@ -74,7 +74,7 @@ PokerServer.prototype = {
 		this._broadcast(player.name +" paid blind ("+ amount +"$).");
 	},
 	onWon: function(player){
-		this._broadcast(player.name +" won.");
+		this._broadcast(player.name +" won. (Stack: "+ player.stackAmount +"$)");
 	},
 
 	_toStringCards: function(cards){

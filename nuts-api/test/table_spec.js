@@ -42,11 +42,33 @@ describe('Table', function(){
 		assert(isStarted);
 	});
 
+	it("Peut jouer une partie", function(){
+		var table = new Table(2);
+
+		var seb = new Player("Seb", 100);
+		var grosbibi = new Player("GrosBibi", 100);
+
+		table.addPlayer(seb);
+		table.addPlayer(grosbibi);
+
+		var play = function(){
+			seb.actions.call();
+			grosbibi.actions.check();
+
+			seb.actions.check();
+			grosbibi.actions.check();
+			
+			seb.actions.fold();
+		};
+
+		assert.doesNotThrow(play);
+	});
+
 	function addPlayers(table, names){
 		var players = {};
 		for(var i = 0; i < names.length; i++){
 			var name = names[i];
-			var player = new Player(name);
+			var player = new Player(name, 100);
 			
 			players[name] = player;
 
