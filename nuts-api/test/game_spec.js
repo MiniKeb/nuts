@@ -14,7 +14,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		assert.deepEqual(game.players, [a, b, c]);
 	});
 
@@ -23,7 +23,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 
 		assert.equal(a.stackAmount, 9);
@@ -38,7 +38,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 
 		assert.notEqual(a.hand.firstCard, null);
@@ -56,7 +56,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 		
 		assert.equal(a.actions, null);
@@ -69,7 +69,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 		
 		assert.equal(a.actions, null);
@@ -115,7 +115,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 		c.actions.fold();
 		a.actions.call();
@@ -147,7 +147,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 
 		//Flop
@@ -180,7 +180,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 
 		//Pre-Flop
@@ -219,7 +219,7 @@ describe('Game', function(){
 		var b = new Player("Bernard", 10);
 		var c = new Player("Chris", 10);
 
-		var game = new Game([a, b, c]);
+		var game = new Game([a, b, c], 0);
 		game.start();
 
 		//Pre-Flop

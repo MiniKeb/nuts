@@ -5,7 +5,7 @@ var Hand = require("./hand");
 var Deck = require("./deck");
 var Evaluator = require("../src/evaluator");
 
-var Game = function(players){
+var Game = function(players, gameCount){
 	if(_.isEmpty(players))
 		throw new Error("Game should have players.");
 	
@@ -18,8 +18,10 @@ var Game = function(players){
 	this.smallBlindAmount = 1;
 	this.bigBlindAmount = 2;
 
-	this.smallBlindPlayer = this.players[0];
-	this.bigBlindPlayer = this.players[1];
+	var index = gameCount < this.players.length ? gameCount : gameCount % this.players.length;
+
+	this.smallBlindPlayer = this.players[index];
+	this.bigBlindPlayer = this.players[index + 1];
 	
 	this.currentPlayer = this.players.length > 2 ? this.players[2] : this.players[0];
 

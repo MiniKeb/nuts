@@ -9,10 +9,7 @@ var Table = function(smallBlind){
 
 	this.players = [];
 	this.deck = new Deck();
-
-	this.currentBlindIndex = 0;
-	this.currentSmallBlind = smallBlind;
-	this.currentPlayerIndex = 0;
+	this.gameCount = 0;
 };
 Table.prototype = extend({}, EventEmitter.prototype, {
 	addPlayer : function (player){
@@ -32,9 +29,10 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 	_startGame: function(){
 		var self = this;
 		this.emit("Started");
-		this.game = new Game(this.players);
+		this.game = new Game(this.players, this.gameCount);
 		this.game.on("Finished", function(){ self._startGame(); });
 		this.game.start();
+		this.gameCount++;
 	}
 });
 

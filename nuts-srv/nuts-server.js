@@ -14,7 +14,7 @@ var PokerServer = function(){
 PokerServer.prototype = {
 	addPlayer : function(name, socket){
 		try{
-			var startCash = 20;
+			var startCash = 100;
 			var player = new Player(name, startCash);
 			
 			var self = this;
