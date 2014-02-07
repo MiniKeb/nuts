@@ -35,21 +35,26 @@ rl.question("Server IP : ", function(ipAddress){
 					console.log(message.content);
 					break;
 				case "Ask":
-					rl.question(message.content, function(action){
-						switch(action){
-							case "bet":
-								rl.question("How much?", function(amount){
-									socket.sendMessage({command: "bet", amount: amount, name : player});
-								});
-								break;
-							case "fold":
-							case "check":
-							case "call":
-								socket.sendMessage({command: action, name : player});
-								break;
-						}
-					});
+					rl.question(message.content, function(action){ askAction(message.content, action); });
 			}
 		});
 	});
 });
+
+function askAction(question, action){
+	switch(action){
+		case "bet":
+			rl.question("How much?", function(amount){
+				socket.sendMessage({command: "bet", amount: amount, name : player});
+			});
+			break;
+		case "fold":
+		case "check":
+		case "call":
+			socket.sendMessage({command: action, name : player});
+			break;
+		default:
+			console.log("Incorrect action : "+ action);
+			rl.question(question,  function(action){ askAction(question, action); });
+	}
+}
