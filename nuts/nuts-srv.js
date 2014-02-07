@@ -6,7 +6,9 @@ var Player = require("../nuts-api/src/player.js");
 var CardParser = require("../nuts-api/src/card_parser.js");
 
 var PokerServer = function(){
-	this.table = new Table(2);
+	var smallBlind = 1;
+	var minPlayerCount = 2;
+	this.table = new Table(smallBlind, minPlayerCount);
 	this.parser = new CardParser("Vcn");
 
 	this.playerSockets = {};
@@ -39,7 +41,7 @@ PokerServer.prototype = {
 
 	removePlayer: function(name){
 		var player = this.getPlayerByName(name);
-		table.removePlayer(player);
+		this.table.removePlayer(player);
 		this.playerSockets[name] = undefined;
 	},
 
