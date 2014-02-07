@@ -1,0 +1,12 @@
+{
+  "name": "nuts-cli",
+  "version": "0.0.1",
+  "description": "Console client for nuts poker game.",
+  "main": ".\\nuts-cli.js",
+  "author": "MiniKeb",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "json-socket": "~0.1.2",
+    "readline": "0.0.3"
+  }
+}
