@@ -56,7 +56,7 @@ Evaluator.prototype = {
 	},
 
 	_getBestCombination : function(player){
-		var cards = _.union(this.board, [player.hand.firstCard, player.hand.secondCard]);
+		var cards = _.union(this.board, player.hand);
 		return this._getHigherCombination(cards);
 	},
 

@@ -27,7 +27,7 @@ describe('Player', function(){
 
 	it("Peut avoir une main avec des cartes", function(){
 		var player = new Player("Bill");
-		var hand = new Hand(new Card(Values[5], Colors.Spade), new Card(Values[8], Colors.Heart));
+		var hand = [new Card(Values[5], Colors.Spade), new Card(Values[8], Colors.Heart)];
 		player.addHand(hand);
 
 		assert.deepEqual(player.hand, hand);

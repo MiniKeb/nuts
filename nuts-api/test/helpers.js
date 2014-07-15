@@ -9,7 +9,7 @@ var Helpers = {
 	},
 
 	createHand : function(firstCard, secondCard){
-		return new Hand(this.createCard(firstCard), this.createCard(secondCard));
+		return [this.createCard(firstCard), this.createCard(secondCard)];
 	},
 
 	createPlayer : function(name, firstCard, secondCard){
