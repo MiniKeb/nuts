@@ -75,7 +75,7 @@ Game.prototype = extend({}, EventEmitter.prototype, {
         for (var i = 0; i < this.players.length; i++) {
             var first = this.deck.peekCard();
             var second = this.deck.peekCard();
-            var hand = new Hand(first, second);
+            var hand = [first, second];
             this.players[i].addHand(hand);
             this.players[i].hasPlayed = false;
         }

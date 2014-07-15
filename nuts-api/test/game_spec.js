@@ -43,14 +43,14 @@ describe('Game', function () {
         var game = new Game([a, b, c], 0);
         game.start();
 
-        assert.notEqual(a.hand.firstCard, null);
-        assert.notEqual(a.hand.secondCard, null);
+        assert.notEqual(a.hand[0], null);
+        assert.notEqual(a.hand[1], null);
 
-        assert.notEqual(b.hand.firstCard, null);
-        assert.notEqual(b.hand.secondCard, null);
+        assert.notEqual(b.hand[0], null);
+        assert.notEqual(b.hand[1], null);
 
-        assert.notEqual(c.hand.firstCard, null);
-        assert.notEqual(c.hand.secondCard, null);
+        assert.notEqual(c.hand[0], null);
+        assert.notEqual(c.hand[1], null);
     });
 
     it("Doit lancer un tour de pari", function () {

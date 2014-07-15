@@ -33,16 +33,6 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 		this.game.on("Finished", function(){ self._startGame(); });
 		this.game.start();
 		this.gameCount++;
-	}
-	distribute : function(){
-		if(this._canPlay()){
-			for(var i = 0; i < this.players.length; i++){
-				var first = this.deck.peekCard();				
-				var second = this.deck.peekCard();
-				var hand = [first, second];
-				this.players[i].addHand(hand);
-			}
-		}
 	},
 
 	wait : function(){
