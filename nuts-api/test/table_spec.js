@@ -64,6 +64,37 @@ describe('Table', function(){
 		assert.doesNotThrow(play);
 	});
 
+	it("Un nouveau joueur en cours de partie ne doit pas y entrer", function(){
+		var table = new Table(2, 3);
+
+		var players = addPlayers(table, ["Seb", "GrosBibi", "Legui"]);
+		
+		players["Legui"].actions.call();
+		players["Seb"].actions.call();
+		players["GrosBibi"].actions.check();
+		
+		table.addPlayer(new Player("Raoul", 100));
+
+		assert.equal(table.game.players.length, 3);
+	});
+
+	it.skip("Un joueur qui part doit quitter la partie", function(){
+		var table = new Table(2, 3);
+
+		var players = addPlayers(table, ["Seb", "GrosBibi", "Legui"]);
+
+		var play = function(){
+			players["Legui"].actions.call();
+			players["Seb"].actions.call();
+			players["GrosBibi"].actions.check();
+
+			table.removePlayer(players["Seb"]);
+		};
+
+		assert.doesNotThrow(play);
+		assert.equal(table.game.players.length, 2);
+	});
+
 	function addPlayers(table, names){
 		var players = {};
 		for(var i = 0; i < names.length; i++){

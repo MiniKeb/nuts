@@ -44,7 +44,7 @@ rl.question("Server IP : ", function(ipAddress){
 function askAction(question, action){
 	switch(action){
 		case "bet":
-			rl.question("How much?", function(amount){
+			rl.question("How much ? ", function(amount){
 				socket.sendMessage({command: "bet", amount: amount, name : player});
 			});
 			break;

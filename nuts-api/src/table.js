@@ -4,8 +4,8 @@ var Hand = require("./hand");
 var Deck = require("./deck");
 var Game = require("./game");
 
-var Table = function(smallBlind){
-	this.minPlayerCount = 2;
+var Table = function(smallBlind, minPlayerCount){
+	this.minPlayerCount = minPlayerCount > 2 ? minPlayerCount : 2;
 
 	this.players = [];
 	this.deck = new Deck();

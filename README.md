@@ -8,10 +8,19 @@ Installation du client
 1. Installer [node.js][node]
 2. Récupérer le fichier [client][nuts client]
 3. Ouvrir une console et se positionner au niveau du fichier téléchargé
-3. Saisir : *npm install json-socket*
+4. Saisir : *npm install json-socket*
 5. Puis saisir : *node .\nuts-cli.js*
 6. C'est parti
 
+TODO
+----
+* Lorsqu'un joueur quitte une partie faire qu'il fold.
+* Trouver un moyen d'éviter les fautes de frappe. OK
+* Informer les autres joueurs de la personne dont c'est le tour. OK
+* Lorsqu'un joueur est a AllIn il ne peut que se coucher, ce n'est pas normal.
+* Au tour suivant, il est possible de jouer sans argent.
+* Faire clignoter la console lorsque c'est mon tour.
+* Afficher la main avec laquelle on a gagné.
 
 
 La liste des URL pratiques pour mon dev

@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 
-  // Add the grunt-mocha-test tasks.
   grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-watch');
 

@@ -9,7 +9,7 @@ var Game = function(players, gameCount){
 	if(_.isEmpty(players))
 		throw new Error("Game should have players.");
 	
-	this.players = players;
+	this.players = _.clone(players);
 	this.deck = new Deck();
 	this.step = 0;
 

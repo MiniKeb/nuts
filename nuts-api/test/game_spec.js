@@ -234,4 +234,29 @@ describe('Game', function(){
 
 		assert.equal(b.stackAmount, 12);
 	});
+
+	it("Doit sauter le tour du joueur qui a fait AllIn", function(){
+		var a = new Player("Alfred", 10);
+		var b = new Player("Bernard", 20);
+		var c = new Player("Chris", 20);
+
+		var game = new Game([a, b, c], 0);
+		game.start();
+
+		//Pre-Flop
+		c.actions.fold();
+		a.actions.call();
+		b.actions.check();
+		//Flop
+		a.actions.bet(10);
+		b.actions.call(2);
+		//Turn
+		assert.equal(a.actions, null);
+		assert.notEqual(b.actions, null);
+		b.actions.check();
+		//River
+		assert.equal(a.actions, null);
+		assert.notEqual(b.actions, null);
+		b.actions.check();
+	});
 });

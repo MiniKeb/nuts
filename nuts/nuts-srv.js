@@ -76,6 +76,7 @@ PokerServer.prototype = {
 			question += action +" ";
 		}
 		question += "?";
+		this._broadcast(player.name +" is playing.");
 		this._askTo(player, question);
 	},
 	onBlind: function(player, amount){
