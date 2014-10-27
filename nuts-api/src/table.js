@@ -33,7 +33,13 @@ Table.prototype = extend({}, EventEmitter.prototype, {
 		this.game.on("Finished", function(){ self._startGame(); });
 		this.game.start();
 		this.gameCount++;
-	}
+	},
+
+	wait : function(){
+		
+	},
+
+	_canPlay : function() { return this.players.length > 1;	}
 });
 
 module.exports = Table;

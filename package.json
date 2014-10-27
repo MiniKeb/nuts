@@ -26,7 +26,9 @@
     "mocha": "~1.15.1",
     "grunt-mocha-test": "~0.8.1",
     "grunt": "~0.4.2",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "grunt-simple-mocha": "^0.4.0",
+    "grunt-contrib-watch": "^0.6.1"
   },
   "dependencies": {
     "json-socket": "~0.1.2",

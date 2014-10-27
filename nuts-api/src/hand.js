@@ -16,4 +16,4 @@ Hand.prototype = {
 	}
 };
 
-module.exports = Hand;
+//module.exports = Hand;
