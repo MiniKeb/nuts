@@ -2,7 +2,7 @@ nuts
 ====
 Jouer avec Node pour faire un petit jeu de poker sans prétention.
 
-(https://codeship.com/projects/ab101c10-9f00-0132-75d9-56e0c71a690d/status?branch=master)
+![codeship](https://codeship.com/projects/ab101c10-9f00-0132-75d9-56e0c71a690d/status?branch=master)
 
 Installation du client
 ----------------------
