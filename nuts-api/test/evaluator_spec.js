@@ -155,7 +155,7 @@ describe('Evaluator', function(){
 
 		var evaluated = new Evaluator(board, players).getWinner();
 
-		assert.equal(evaluated.player.name, winner.player);
+		assert.equal(evaluated.player.name, winnner.player);
 		assert.equal(evaluated.combination.name, winner.combination);
 	}
 

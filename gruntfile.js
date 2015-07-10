@@ -10,12 +10,12 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec'
         },
-        src: "./nuts-api/test/*_spec.js"
+        src: "./nuts-api-2/test/*_spec.js"
       }
     },
 
     watch: {
-      files: "./nuts-api/**/*.js",
+      files: "./nuts-api-2/**/*.js",
       tasks: ['test']
     }
   });
