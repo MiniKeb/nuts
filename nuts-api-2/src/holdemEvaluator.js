@@ -23,7 +23,7 @@ HoldemEvaluator.prototype = {
 		if (_.any(cardByName, function(grouping){ return grouping.length > 1; }))
 			throw Error("You can not provide twice the same card.");
 
-		var cards =  _.sortBy(cards, function(card){ return card.value; }).reverse();
+		var cards = _.sortBy(cards, function(card){ return card.value; }).reverse();
 		var combinations = new CombinationAnalyzer();
 		combinations.analyze(cards);
 
@@ -90,21 +90,32 @@ CombinationAnalyzer.prototype = {
 	},
 
 	_processSequence: function(sortedCards){
-		var previous = sortedCards[0].value + 1;
-		for(var c in sortedCards){
-			var card = sortedCards[c];
-			if (card.value == previous - 1){
-				this.straight.push(card);
-			}else if(this.straight.length < 5){
-				this.straight = [card];
-			}
-			previous = card.value;
-		}
 
-		if(this.straight.length == 4 
-			&& this.straight[3].value == 2 
-			&& sortedCards[0].value == 14)
-			this.straight.push(sortedCards[0]);
+		var groupBySequence = sortedCards.reduce(function(accumulation, item, index){
+			if(index === 0)
+				return [[item]];
+
+			var lastArray = accumulation[accumulation.length - 1];
+			var lastItem = lastArray[lastArray.length - 1];
+			
+			if(lastItem.value - 1 === item.value){
+				lastArray.push(item); // append to current sequence
+
+				if(item.value === 2){
+					var aces = sortedCards.filter(function(card){ return card.value === 14; });
+					var betterAce = aces.filter(function(ace){ return ace.color === item.color; });
+					if(betterAce.length === 1)
+						lastArray.push(betterAce[0]);
+					else if(aces.length > 0)
+						lastArray.push(aces[0]);
+				}
+			}
+			else
+				accumulation.push([item]); // create new sequence
+
+			return accumulation;
+		}, []);
+		this.straight = groupBySequence.reduce(function(best, current){ return (current.length >= 5) ? current : best; }, []);
 	}
 }
 

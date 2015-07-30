@@ -189,6 +189,16 @@ describe('Holdem Evaluator', function(){
 		assertArrayEquality(result.cards, cardParser.parse("Ks Qs Js 9s 8s"));
 	});
 
+	it("Doit évaluer une quinte flush avec un as", function(){
+		var evaluator = new HoldemEvaluator();
+		var cards = cardParser.parse("2s 3s 4s 5s Ac As Ah");
+
+		var result = evaluator.evaluate(cards);
+
+		assert.equal(result.name, "Straight Flush");
+		assertArrayEquality(result.cards, cardParser.parse("5s 4s 3s 2s As"));
+	});
+
 	it("Doit valider que les combinaisons sont dans l'ordre croissant de score", function(){
 		var evaluator = new HoldemEvaluator();
 
