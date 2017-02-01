@@ -29,7 +29,7 @@ La liste des URL pratiques pour mon dev
 ---------------------------------------
 * Grunt : http://gruntjs.com/sample-gruntfile
 * RequireJS : http://requirejs.org/docs/node.html
-* Mocha : http://visionmedia.github.io/mocha/#example-test-suites
+* Mocha : http://mochajs.org/#examples
 nodejs.org/api/net.html#net_event_end* Underscore : http://underscorejs.org/
 
 Allez hop des liens qui me sont utiles:
